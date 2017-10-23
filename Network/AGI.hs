@@ -43,7 +43,7 @@ data AGIEnv = AGIEnv { agiVars :: [(String, String)]
                      }
 
 newtype AGIT m a = AGI { runAGIT :: ReaderT AGIEnv m a }
-    deriving (Monad, MonadIO, Functor, {- MonadError IOError, -} MonadReader AGIEnv)
+    deriving (Applicative, Monad, MonadIO, Functor, {- MonadError IOError, -} MonadReader AGIEnv)
 
 type AGI = AGIT IO
 
@@ -61,6 +61,10 @@ data Digit
     | Seven
     | Eight
     | Nine
+    | DigitA
+    | DigitB
+    | DigitC
+    | DigitD
       deriving (Eq, Ord, Read, Show, Enum, Data, Typeable)
 
 -- |convert a 'Digit' to its ASCII representation
@@ -77,6 +81,10 @@ ppDigit Six = '6'
 ppDigit Seven = '7'
 ppDigit Eight = '8'
 ppDigit Nine = '9'
+ppDigit DigitA = 'A'
+ppDigit DigitB = 'B'
+ppDigit DigitC = 'C'
+ppDigit DigitD = 'D'
 
 -- |convert a list of 'Digit's into a quoted string.
 -- The quoted string format is used by many AGI commands
@@ -151,18 +159,18 @@ readAgiVars :: Handle -> IO [(String, String)]
 readAgiVars inh = 
     do mAgiVar <- readAgiVar 
        case mAgiVar of
-	    Nothing -> 
-		return []
-	    Just agiVar ->
-		do rest <- readAgiVars inh
-		   return (agiVar:rest)
+            Nothing -> 
+                return []
+            Just agiVar ->
+                do rest <- readAgiVars inh
+                   return (agiVar:rest)
     where readAgiVar :: IO (Maybe (String, String))
-	  readAgiVar =
-	      do l <- hGetLine inh
-		 case l of
-		      "" -> return Nothing
-		      _ -> let (a,v) = break ((==) ':') l in
-				       return (Just (a, dropWhile ((==) ' ') (tail v)))
+          readAgiVar =
+              do l <- hGetLine inh
+                 case l of
+                      "" -> return Nothing
+                      _ -> let (a,v) = break ((==) ':') l in
+                                       return (Just (a, dropWhile ((==) ' ') (tail v)))
 
 -- |send an AGI Command, and return the Response
 --
@@ -230,7 +238,7 @@ getData :: (MonadIO m)
         -> AGIT m (Maybe ([Digit], Bool)) -- ^ Nothing on failure, Just (digits, timeout) on success
 getData fp mTimeout mMaxDigits =
     let cmd =
-	    "GET DATA " ++ fp ++
+            "GET DATA " ++ fp ++
                         case (mTimeout, mMaxDigits) of
                           (Nothing, Nothing) -> ""
                           (Just timeout, Nothing) ->  show timeout
@@ -507,7 +515,15 @@ pDigit =
     (char '6' >> return Six) <|>
     (char '7' >> return Seven) <|>
     (char '8' >> return Eight) <|>
-    (char '9' >> return Nine)
+    (char '9' >> return Nine) <|>
+    (char 'a' >> return DigitA) <|>
+    (char 'A' >> return DigitA) <|>
+    (char 'b' >> return DigitB) <|>
+    (char 'B' >> return DigitB) <|>
+    (char 'c' >> return DigitC) <|>
+    (char 'C' >> return DigitC) <|>
+    (char 'd' >> return DigitD) <|>
+    (char 'D' >> return DigitD)
 
 pAsciiDigit :: CharParser () Digit
 pAsciiDigit =
@@ -525,6 +541,14 @@ pAsciiDigit =
          "55" -> return Seven
          "56" -> return Eight
          "57" -> return Nine
+         "65" -> return DigitA
+         "97" -> return DigitA
+         "66" -> return DigitB
+         "98" -> return DigitB
+         "67" -> return DigitC
+         "99" -> return DigitC
+         "68" -> return DigitD
+         "100" -> return DigitD
          _ -> pzero <?> "The ascii character code " ++ ds ++ " (" ++ [chr (read ds)] ++ ") does not correspond to a digit on the keypad"
 
 pEndPos :: CharParser () Integer
