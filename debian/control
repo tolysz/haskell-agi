@@ -1,0 +1,105 @@
+Source: haskell-agi
+Maintainer: Jeremy Shaw <jeremy@seereason.com>
+Priority: optional
+Section: haskell
+Build-Depends: debhelper (>= 7.0)
+               , haskell-devscripts (>= 0.8)
+               , cdbs
+               , ghc
+               , ghc-prof
+               , libghc-base-dev (>= 3) | ghc
+               , libghc-base-dev (<< 5) | ghc
+               , libghc-base-prof (>= 3) | ghc-prof
+               , libghc-base-prof (<< 5) | ghc-prof
+               , libghc-mtl-dev
+               , libghc-mtl-prof
+               , libghc-network-dev
+               , libghc-network-prof
+               , libghc-parsec3-dev (>= 3) | libghc-parsec2-dev (<< 3)
+               , libghc-parsec3-prof (>= 3) | libghc-parsec2-prof (<< 3)
+               , libghc-random-dev
+               , libghc-random-prof
+               , libghc-syb-dev
+               , libghc-syb-prof
+               , libghc-unix-dev | ghc
+               , libghc-unix-prof | ghc-prof
+Build-Depends-Indep: ghc-doc
+                     , libghc-base-doc (>= 3) | ghc-doc
+                     , libghc-base-doc (<< 5) | ghc-doc
+                     , libghc-mtl-doc
+                     , libghc-network-doc
+                     , libghc-parsec3-doc (>= 3) | libghc-parsec2-doc (<< 3)
+                     , libghc-random-doc
+                     , libghc-syb-doc
+                     , libghc-unix-doc | ghc-doc
+
+Package: libghc-agi-dev
+Architecture: any
+Depends: ${shlibs:Depends}
+         , ${haskell:Depends}
+         , ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Conflicts: ${haskell:Conflicts}
+Provides: ${haskell:Provides}
+Replaces: ${haskell:Replaces}
+Description: A library for writing AGI scripts for Asterisk
+ Asterisk is an open-source Voice over IP server (VoIP).
+ Asterisk provides an Asterisk Gateway Interface (AGI), which
+ can be used to write external programs that interact with
+ Asterisk. It is typically used for creating Interactive Voice
+ Response (IVR) systems.
+ .
+  Author: Jeremy Shaw
+  Upstream-Maintainer: Jeremy Shaw <jeremy@n-heptane.com>
+ .
+ This package provides a library for the Haskell programming language.
+ See http:///www.haskell.org/ for more information on Haskell.
+
+Package: libghc-agi-prof
+Architecture: any
+Depends: ${shlibs:Depends}
+         , ${haskell:Depends}
+         , ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Conflicts: ${haskell:Conflicts}
+Provides: ${haskell:Provides}
+Replaces: ${haskell:Replaces}
+Description: A library for writing AGI scripts for Asterisk
+ Asterisk is an open-source Voice over IP server (VoIP).
+ Asterisk provides an Asterisk Gateway Interface (AGI), which
+ can be used to write external programs that interact with
+ Asterisk. It is typically used for creating Interactive Voice
+ Response (IVR) systems.
+ .
+  Author: Jeremy Shaw
+  Upstream-Maintainer: Jeremy Shaw <jeremy@n-heptane.com>
+ .
+ This package provides a library for the Haskell programming language, compiled
+ for profiling.  See http:///www.haskell.org/ for more information on Haskell.
+
+Package: libghc-agi-doc
+Architecture: all
+Section: doc
+Depends: ${shlibs:Depends}
+         , ${haskell:Depends}
+         , ${misc:Depends}
+Recommends: ${haskell:Recommends}
+Suggests: ${haskell:Suggests}
+Conflicts: haskell-agi-doc, ${haskell:Conflicts}
+Provides: haskell-agi-doc, ${haskell:Provides}
+Replaces: haskell-agi-doc, ${haskell:Replaces}
+Description: A library for writing AGI scripts for Asterisk
+ Asterisk is an open-source Voice over IP server (VoIP).
+ Asterisk provides an Asterisk Gateway Interface (AGI), which
+ can be used to write external programs that interact with
+ Asterisk. It is typically used for creating Interactive Voice
+ Response (IVR) systems.
+ .
+  Author: Jeremy Shaw
+  Upstream-Maintainer: Jeremy Shaw <jeremy@n-heptane.com>
+ .
+ This package provides the documentation for a library for the Haskell
+ programming language.
+ See http:///www.haskell.org/ for more information on Haskell.
